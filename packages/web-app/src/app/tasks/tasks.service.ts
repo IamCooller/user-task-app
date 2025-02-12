@@ -52,13 +52,20 @@ export class TasksService {
 		}
 	}
 
+	/**
+	 * Filters the tasks array by the specified search string.
+	 *
+	 * If the search string is empty, it will call `getTasksFromStorage` to retrieve the full list of tasks.
+	 *
+	 * @param search - The search string to filter the tasks by.
+	 */
 	searchTask(search: string): void {
-		if (search) {
-			// TODO: filter tasks which title include search value
-			throw new Error("Not implemented");
+		if (search && search !== "") {
+			this.storageService.getTasks().then((allTasks) => {
+				this.tasks = allTasks.filter((task) => task.title.toLowerCase().includes(search.toLowerCase()));
+			});
 		} else {
-			// TODO: reload all tasks from storage
-			throw new Error("Not implemented");
+			this.getTasksFromStorage();
 		}
 	}
 }

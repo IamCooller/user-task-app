@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Task, TaskPriority } from "@take-home/shared";
 import { StorageService } from "../../storage/storage.service";
 import { faker } from "@faker-js/faker";
+import { scheduled } from "rxjs";
 
 @Component({
 	selector: "take-home-add-component",
@@ -14,8 +15,7 @@ import { faker } from "@faker-js/faker";
 export class AddComponent {
 	protected addTaskForm: FormGroup = new FormGroup({
 		title: new FormControl(null, {
-			// TODO: add validators for required and min length 10
-			validators: [Validators.required, Validators.minLength(10)],
+			validators: [Validators.required, Validators.minLength(10)], // validate title length to be at least 10 characters
 		}),
 		description: new FormControl(null),
 		priority: new FormControl(
@@ -24,10 +24,14 @@ export class AddComponent {
 				validators: Validators.required,
 			}
 		),
+		scheduledDate: new FormControl(new Date(), { validators: Validators.required }),
 	});
 	protected priorities = Object.values(TaskPriority);
 
 	constructor(private storageService: StorageService, private router: Router) {}
+
+	today: Date = new Date();
+	maxDate: Date = new Date(new Date().setDate(this.today.getDate() + 7));
 
 	onSubmit() {
 		if (this.addTaskForm.valid) {
@@ -35,7 +39,6 @@ export class AddComponent {
 				...this.addTaskForm.getRawValue(),
 				uuid: faker.string.uuid(),
 				isArchived: false,
-				scheduledDate: new Date(),
 			};
 
 			this.storageService.addTaskItem(newTask);
