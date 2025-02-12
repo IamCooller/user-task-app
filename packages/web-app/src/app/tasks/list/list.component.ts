@@ -17,17 +17,33 @@ export class ListComponent {
 		this.getTaskList();
 	}
 
+	/**
+	 * Set the given task as completed and persist the update.
+	 *
+	 * @param item the task to mark as completed
+	 */
 	onDoneTask(item: Task): void {
-		// TODO: mark as completed
-		// TODO: save updated task to storage
-		throw new Error("Not implemented");
+		item.completed = true;
+
+		this.storageService.updateTaskItem(item);
 	}
 
+	/**
+	 * Mark the given task as archived and persist the update.
+	 *
+	 * @param item the task to archive
+	 */
 	onDeleteTask(item: Task): void {
-		// TODO: mark as archived
-		// TODO: save updated task to storage
-		// TODO: refresh list without archived items
-		throw new Error("Not implemented");
+		item.isArchived = true;
+
+		this.storageService
+			.updateTaskItem(item)
+			.then(() => {
+				this.tasksService.getTasksFromStorage();
+			})
+			.catch((error) => {
+				console.error("Error deleting task:", error);
+			});
 	}
 
 	onAddTask(): void {

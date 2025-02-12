@@ -13,10 +13,12 @@ import { Router } from "@angular/router";
 import { MatButtonHarness } from "@angular/material/button/testing";
 import { HarnessLoader } from "@angular/cdk/testing";
 import { MatDatepickerInputHarness } from "@angular/material/datepicker/testing";
-
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { Task } from "@take-home/shared";
 class MockStorageService {
-	updateTaskItem(): void {
-		return;
+	addTaskItem(task: Task): Promise<void> {
+		return Promise.resolve();
 	}
 }
 
@@ -29,7 +31,18 @@ describe("AddComponent", () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule],
+			imports: [
+				BrowserModule,
+				BrowserAnimationsModule,
+				FormsModule,
+				ReactiveFormsModule,
+				MatButtonModule,
+				MatFormFieldModule,
+				MatInputModule,
+				MatSelectModule,
+				MatDatepickerModule,
+				MatNativeDateModule,
+			],
 			declarations: [AddComponent],
 			providers: [{ provide: StorageService, useClass: MockStorageService }],
 		}).compileComponents();
@@ -60,7 +73,9 @@ describe("AddComponent", () => {
 		await cancelButton.click();
 		fixture.detectChanges();
 		expect(component.onCancel).toHaveBeenCalledTimes(1);
-		expect(router.navigateByUrl).toHaveBeenCalledWith("/");
+		expect(router.navigateByUrl).toHaveBeenCalled();
+		const navArg = (router.navigateByUrl as jest.Mock).mock.calls[0][0];
+		expect(navArg.toString()).toEqual("/");
 	});
 
 	it(`should prevent adding task without a valid title`, async () => {
@@ -89,7 +104,7 @@ describe("AddComponent", () => {
 	it(`should create a new task for a valid submission and navigate home`, async () => {
 		jest.spyOn(router, "navigateByUrl").mockResolvedValue(true);
 		jest.spyOn(component, "onSubmit");
-		jest.spyOn(storageService, "updateTaskItem").mockResolvedValue();
+		jest.spyOn(storageService, "addTaskItem").mockResolvedValue();
 		component["addTaskForm"].controls["title"].setValue("Adding a test task");
 		component["addTaskForm"].controls["description"].setValue("This task should be added to the list");
 		fixture.detectChanges();
@@ -97,14 +112,16 @@ describe("AddComponent", () => {
 		await addButton.click();
 		fixture.detectChanges();
 		expect(component.onSubmit).toBeCalledTimes(1);
-		expect(storageService.updateTaskItem).toBeCalledTimes(1);
-		expect(storageService.updateTaskItem).toBeCalledWith(
+		expect(storageService.addTaskItem).toBeCalledTimes(1);
+		expect(storageService.addTaskItem).toBeCalledWith(
 			expect.objectContaining({
 				isArchived: false,
 				title: "Adding a test task",
 				description: "This task should be added to the list",
 			})
 		);
-		expect(router.navigateByUrl).toHaveBeenCalledWith("/");
+		expect(router.navigateByUrl).toHaveBeenCalled();
+		const navArg = (router.navigateByUrl as jest.Mock).mock.calls[0][0];
+		expect(navArg.toString()).toEqual("/");
 	});
 });
