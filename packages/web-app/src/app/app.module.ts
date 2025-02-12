@@ -9,6 +9,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatNativeDateModule, MatOptionModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -67,6 +69,7 @@ const routes: Route[] = [
 		MatSelectModule,
 		MatOptionModule,
 		MatProgressBarModule,
+		MatSnackBarModule,
 		MatDatepickerModule,
 		MatInputModule,
 		FormsModule,

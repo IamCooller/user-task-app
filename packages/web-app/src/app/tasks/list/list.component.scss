@@ -1,27 +1,170 @@
+:host {
+	width: 100%;
+}
+
 .container {
-  justify-content: space-around;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: var(--layout-padding);
+	h1 {
+		font-size: 2rem;
+		margin-bottom: 0.5rem;
+		color: rgba(0, 0, 0, var(--font-opacity));
+	}
 
-  .action-button-row {
-    display: flex;
-    justify-content: flex-start;
-    gap: var(--layout-gap-size);
-  }
+	h3 {
+		font-size: 1.2rem;
+		margin-bottom: 1rem;
+		color: rgba(0, 0, 0, var(--font-opacity));
+	}
 
-  .tasks {
-    display: inline-flex;
-    flex-direction: column;
-    margin: 5px;
-    width: min(calc(100vw - var(--layout-padding)), var(--layout-width-max));
-    gap: var(--layout-gap-size);
+	.action-button-row {
+		align-self: flex-start;
+		margin-bottom: var(--layout-gap-size);
+		button {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+	.no-tasks {
+		font-size: 1.2rem;
+		color: rgba(0, 0, 0, var(--font-opacity));
+		text-align: center;
+		padding: var(--layout-padding);
+	}
 
-    mat-card {
-      padding: var(--layout-padding);
-      &.complete {
-        background-color: var(--success-color);
-      }
-      .high-priority {
-        color: var(--error-color);
-      }
-    }
-  }
+	.tasks {
+		display: flex;
+		flex-direction: column;
+		gap: var(--layout-gap-size);
+		width: 100%;
+		max-width: var(--layout-width-max);
+	}
+	.add-task-btn {
+		background-color: var(--success-color);
+		color: #fff;
+		transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+		position: fixed;
+		bottom: 2rem;
+		right: 2rem;
+		z-index: 10;
+		.mat-icon {
+			font-size: 24px;
+			height: auto;
+		}
+		&:hover .mat-icon,
+		&:focus .mat-icon,
+		&:hover {
+			transform: scale(1.2);
+		}
+		&:active {
+			transform: scale(0.8);
+		}
+	}
+	.toolbar {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+
+		gap: var(--layout-gap-size);
+		margin-bottom: var(--layout-gap-size);
+	}
+	mat-card {
+		padding: var(--layout-padding);
+		border-radius: var(--layout-border-radius);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		background-color: var(--background-light-color);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		display: flex;
+		flex-direction: column;
+
+		&:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+
+		&.complete {
+			background-color: var(--success-color);
+			color: #fff;
+			* {
+				color: #fff;
+			}
+		}
+
+		mat-card-title {
+			font-size: 1.5rem;
+			margin-bottom: var(--layout-gap-size);
+			color: inherit;
+			position: relative;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: var(--layout-gap-size);
+			.priority {
+				font-weight: bold;
+				font-size: 1rem;
+				padding: 4px 8px;
+				border-radius: var(--layout-border-radius);
+				background-color: var(--background-dark-color);
+				color: #fff;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				&.high-priority {
+					background-color: #d9534f;
+				}
+				&.medium-priority {
+					background-color: #f0ad4e;
+				}
+				&.low-priority {
+					background-color: #97b497;
+				}
+			}
+		}
+
+		mat-card-header {
+			font-size: 0.9rem;
+			margin-bottom: var(--layout-gap-size);
+			display: inline-block;
+			padding: 4px 8px;
+			border-radius: var(--layout-border-radius);
+			background-color: var(--background-dark-color);
+			color: #fff;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		mat-card-content {
+			padding: 0;
+
+			margin-bottom: var(--layout-gap-size);
+			color: inherit;
+		}
+
+		mat-card-footer {
+			font-weight: bold;
+			margin-top: var(--layout-gap-size);
+
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.scheduled-date {
+				font-style: italic;
+				font-size: 0.8rem;
+			}
+		}
+
+		mat-card-actions {
+			display: flex;
+			justify-content: flex-end;
+			gap: var(--layout-gap-size);
+
+			button {
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: box-shadow 0.3s ease;
+				&:hover {
+					box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+				}
+			}
+		}
+	}
 }

@@ -1,8 +1,11 @@
-<div class="container">
-  <form [formGroup]="searchForm">
-    <mat-form-field>
-      <mat-label>Search</mat-label>
-      <input matInput type="text" formControlName="search" />
-    </mat-form-field>
-  </form>
+<div class="search-container">
+	<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+		<mat-form-field appearance="outline" class="search-field">
+			<mat-label>Search Tasks</mat-label>
+			<input matInput type="text" formControlName="search" placeholder="Enter search term" />
+			<button mat-icon-button matSuffix type="submit" aria-label="Search">
+				<mat-icon>search</mat-icon>
+			</button>
+		</mat-form-field>
+	</form>
 </div>

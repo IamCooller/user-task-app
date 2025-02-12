@@ -5,6 +5,7 @@ import { Task, TaskPriority } from "@take-home/shared";
 import { StorageService } from "../../storage/storage.service";
 import { faker } from "@faker-js/faker";
 import { scheduled } from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
 	selector: "take-home-add-component",
@@ -28,7 +29,7 @@ export class AddComponent {
 	});
 	protected priorities = Object.values(TaskPriority);
 
-	constructor(private storageService: StorageService, private router: Router) {}
+	constructor(private snackBar: MatSnackBar, private storageService: StorageService, private router: Router) {}
 
 	today: Date = new Date();
 	maxDate: Date = new Date(new Date().setDate(this.today.getDate() + 7));
@@ -40,10 +41,12 @@ export class AddComponent {
 				uuid: faker.string.uuid(),
 				isArchived: false,
 			};
-
-			this.storageService.addTaskItem(newTask);
-
-			this.router.navigate(["/"]);
+			this.storageService.addTaskItem(newTask).then(() => {
+				this.snackBar.open("Task added successfully!", "Close", {
+					duration: 3000,
+				});
+				this.router.navigateByUrl("/");
+			});
 		}
 	}
 
